@@ -1,11 +1,13 @@
 import subprocess
 
+
 def parse_metadata_string(string: str) -> str:
     res = string.split()
     if len(res) > 2:
         return " ".join(res[2:])
     else:
         return None
+
 
 def metadata(playerctl: str = "playerctl") -> dict:
     '''
@@ -14,13 +16,16 @@ def metadata(playerctl: str = "playerctl") -> dict:
     playerctl metadata
     '''
     result_data = {}
-    result_bash = subprocess.check_output([playerctl, "metadata"]).decode("utf-8").split("\n")
+    result_bash = subprocess.check_output(
+        [playerctl, "metadata"]).decode("utf-8").split("\n")
     result_data["length"] = int(parse_metadata_string(result_bash[0]))
-    result_data["track_id"] = parse_metadata_string(result_bash[1]).replace("'", "")
+    result_data["track_id"] = parse_metadata_string(
+        result_bash[1]).replace("'", "")
     result_data["album"] = parse_metadata_string(result_bash[2])
     result_data["artist"] = parse_metadata_string(result_bash[3])
     result_data["title"] = parse_metadata_string(result_bash[4])
     return result_data
+
 
 def play(playerctl: str = "playerctl") -> None:
     '''
@@ -30,6 +35,7 @@ def play(playerctl: str = "playerctl") -> None:
     '''
     subprocess.run([playerctl, "play"])
 
+
 def pause(playerctl: str = "playerctl") -> None:
     '''
     Pause playing track
@@ -37,6 +43,7 @@ def pause(playerctl: str = "playerctl") -> None:
     playerctl pause
     '''
     subprocess.run([playerctl, "pause"])
+
 
 def toggle_play(playerctl: str = "playerctl") -> None:
     '''
@@ -48,6 +55,7 @@ def toggle_play(playerctl: str = "playerctl") -> None:
     '''
     subprocess.run([playerctl, "play-pause"])
 
+
 def stop(playerctl: str = "playerctl") -> None:
     '''
     Stop player
@@ -55,6 +63,7 @@ def stop(playerctl: str = "playerctl") -> None:
     playerctl stop
     '''
     subprocess.run([playerctl], "stop")
+
 
 def next(playerctl: str = "playerctl"):
     '''
@@ -66,4 +75,3 @@ def next(playerctl: str = "playerctl"):
 
 if __name__ == "__main__":
     toggle_play()
-
